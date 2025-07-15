@@ -1,6 +1,7 @@
 package com.example.workshopMongo.resources;
 
 
+import com.example.workshopMongo.domain.Post;
 import com.example.workshopMongo.domain.User;
 import com.example.workshopMongo.dto.UserDto;
 import com.example.workshopMongo.servicies.UserService;
@@ -74,4 +75,14 @@ public class UserResource {
         return ResponseEntity.noContent().build();
     }
 
+
+    @RequestMapping(value = "/{id}/posts", method = RequestMethod.GET)
+    public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+        Optional<User> userOptional = userService.findById(id);
+
+        User user = userOptional.orElseThrow(() ->
+                new ObjectNotFoundException("Objeto não encontrado"));
+
+        return ResponseEntity.ok().body(userOptional.get().getPostsList());
+    }
 }

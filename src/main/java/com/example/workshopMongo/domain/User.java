@@ -2,8 +2,11 @@ package com.example.workshopMongo.domain;
 
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Document
@@ -13,6 +16,8 @@ public class User {
     private String id;
     private String name;
     private String email;
+    @DBRef(lazy = true)
+    private List<Post> postsList = new ArrayList<>();
 
     public User(){
 
@@ -47,6 +52,15 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public List<Post> getPostsList() {
+        return postsList;
+    }
+
+    public void setPostsList(List<Post> postsList) {
+        this.postsList = postsList;
+    }
+
 
     @Override
     public boolean equals(Object o) {
