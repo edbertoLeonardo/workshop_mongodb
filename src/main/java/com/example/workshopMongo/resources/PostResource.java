@@ -2,20 +2,13 @@ package com.example.workshopMongo.resources;
 
 
 import com.example.workshopMongo.domain.Post;
-import com.example.workshopMongo.domain.User;
-import com.example.workshopMongo.dto.UserDto;
 import com.example.workshopMongo.servicies.PostService;
-import com.example.workshopMongo.servicies.UserService;
 import com.example.workshopMongo.servicies.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/posts")
