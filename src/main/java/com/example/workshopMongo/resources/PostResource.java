@@ -2,12 +2,14 @@ package com.example.workshopMongo.resources;
 
 
 import com.example.workshopMongo.domain.Post;
+import com.example.workshopMongo.resources.util.URL;
 import com.example.workshopMongo.servicies.PostService;
 import com.example.workshopMongo.servicies.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -33,6 +35,13 @@ public class PostResource {
                 new ObjectNotFoundException("Objeto não encontrado"));
 
         return ResponseEntity.ok().body(post);
+    }
+
+    @RequestMapping(value = "/titlesearch", method = RequestMethod.GET)
+    public ResponseEntity<List<Post>> findByTile(@RequestParam(value = "text", defaultValue = "") String text){
+       text = URL.decodoParam(text);
+       List<Post> list = postService.findByTitle(text);
+       return  ResponseEntity.ok().body(list);
     }
 
 }
