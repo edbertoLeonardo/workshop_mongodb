@@ -8,7 +8,10 @@ import com.example.workshopMongo.servicies.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriBuilder;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,6 +46,32 @@ public class UserResource {
                 new ObjectNotFoundException("Objeto não encontrado"));
 
         return ResponseEntity.ok().body(new UserDto(user));
+    }
+
+    //@PostMapping  ALTERNATIVA AO @RequestMapping
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<UserDto> insert(@RequestBody UserDto userDto) {
+        User user = userService.fromDTO(userDto);
+        user = userService.inseet(user);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
+
+        return ResponseEntity.created(uri).build();
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteById(@PathVariable String id) {
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<UserDto> update(@RequestBody UserDto userDto, @PathVariable String id) {
+        User user = userService.fromDTO(userDto);
+        user.setId(id);
+        user = userService.update(user);
+
+        return ResponseEntity.noContent().build();
     }
 
 }
